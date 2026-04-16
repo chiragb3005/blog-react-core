@@ -7,7 +7,7 @@ export class AuthService {
     // we first have to make endpoint and setpoint in the client before making the account
     account;
 
-    constructor(setPoint, endPoint){
+    constructor(){
         this.client
         .setEndpoint(conf.appwriteUrl)
         .setProject(conf.appwriteProjectId);
@@ -75,3 +75,6 @@ export default authService;
 // if later want to change the service of backend 
 // simply change my this file
 // frontend only gonna call the methods i declare here but never knows what happening behind the scenes
+
+
+// made an client now here basically
