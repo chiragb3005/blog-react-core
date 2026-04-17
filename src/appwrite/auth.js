@@ -51,7 +51,7 @@ export class AuthService {
         // null in case both try catch fails
     }
 
-    async getCurrentUSer() {
+    async getCurrentUser() {
         try {
             return await this.account.get()
         } 
