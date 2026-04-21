@@ -44,11 +44,18 @@ function Header () {
                             item.active ? (
                                 <li key={item.name}>
                                     <button className="inline-block px-6 py-2 duration-200 hover:bg-blue-100 rounded-full"
-                                    onClick={navigate(item.slug)}>
+                                    onClick={() => {navigate(item.slug)}}>
                                         {item.name}
                                     </button>
                                 </li>
                             ) : null
+                        )}
+                        {/* if authStatus is true only then this will run  */}
+                        {authStatus && (
+                            <li>
+                                <LogoutButton />
+                                {/* if u r an auth only then logout button will be shown */}
+                            </li>
                         )}
                     </ul>
                 </nav>
