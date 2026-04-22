@@ -18,11 +18,11 @@ function Login () {
         // after start of submissiion clearing out all the prev error if any
         setError("")
         try {
-            const session = await authService.login(data)
+            const session = await authService.login(data.email, data.password)
             if (session){
                 const userData = await authService.getCurrentUser()
                 if(userData){
-                    dispatch(authLogin(userData))
+                    dispatch(authLogin({userData}))
                     navigate('/')
                     // by Link you have to click in navigate it took u automatically
                 }
@@ -38,7 +38,7 @@ function Login () {
 
     return (
         <div className="flex items-center justify-center w-full">
-            <div className={`mx-auto w-full maax-w-lg bg-gray-100 rounded-xl p-10 border border-black/10`}>
+            <div className={`mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black/10`}>
                 <div className="mb-2 flex justify-center ">
                     <span className="inline-block w-full max-w-25">
                         <Logo width="100%"/>
@@ -57,11 +57,11 @@ function Login () {
                     {error && <p className="text-red-600 mt-8 text-center"> {error} </p>}
                 <form onSubmit={handleSubmit(login)} className="mt-8">
                     <div className="space-y-5">
-                        // creation of input tag which i have already created using Ref
                         <Input
                         label='E-mail'
                         type= 'email'
                         placeholder= 'Enter your e-mail'
+                        className='py-0.5'
                         {...register('email', {
                             required: true,
                             validate: {

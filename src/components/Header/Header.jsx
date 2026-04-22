@@ -1,5 +1,5 @@
 import React from "react";
-import {Container, Logo, LogoutButton} from '../index'
+import {Container, Logo, LogoutButton} from '../../components'
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -28,6 +28,11 @@ function Header () {
             name: 'All Posts',
             slug: '/all-posts',
             active: authStatus,
+        },
+        {
+            name: 'Add Posts',
+            slug: 'add-post',
+            active: authStatus
         }
     ]
     return (

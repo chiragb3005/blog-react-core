@@ -1,20 +1,22 @@
 import React, { Children } from "react";
 
-function Button (
+function Button ({
     children,
     type = "button",
-    bgcolor= 'bg-blue-600',
+    bgColor= 'bg-blue-600',
     textColor = 'white',
-    classname = '',
+    className = '',
     ...props
-) {
+}) {
     
     return (
-        <div>
-            <button className={`px-4 py-2 rounded-lg ${classname} ${bgcolor} ${textColor} {...props}`}>
-                {children}
-            </button>
-        </div>
+            <button
+            type={type}
+            className={`px-4 py-2 text-base rounded-lg ${bgColor} ${textColor} ${className}`}
+            {...props}        // ✅ spread here on the element
+        >
+            {children}
+        </button>
     )
 }
 

@@ -10,13 +10,17 @@ export default function Posts() {
     const {slug} = useParams()
     const navigate = useNavigate()
 
-    const userData = useSelector((state) => {state.auth.userData})
+    const userData = useSelector((state) => state.auth.userData)
 
     const isAuthor = post && userData ? post.userId === userData.$id : false;
 
     useEffect(() => {
         if(slug){
-            service.getPost(post)
+            service.getPost(slug).then((post) =>{
+                if(post){
+                    setPost(post)
+                }
+            })
         }
         else{
             navigate('/')
@@ -34,26 +38,47 @@ export default function Posts() {
 
 
     return (
-        post ? (
-            <div className="py-8">
-                <Container>
-                    <div className="w-full flex justify-center mb-4 relative border rounded-xl p-2">
-                        <img src={service.getFilePreview(post.featuredImage)} alt={post.title} />
+    post ? (
+        <div className="py-8">
+            <Container>
+                <div className="max-w-4xl mx-auto">
+
+                    {/* Image */}
+                    <div className="w-full rounded-xl overflow-hidden mb-6 relative">
+                        {post.featuredImage && (
+                            <img
+                            src={service.getFilePreview(post.featuredImage)}
+                            alt={post.title}
+                            className="w-full object-cover max-h-96"
+                            />
+                        )}
+                    </div>
+
+                    {/* Title + Buttons row */}
+                    <div className="flex justify-between items-center mb-6">
+                        <h1 className="text-3xl font-bold">{post.title}</h1>
                         {isAuthor && (
-                            <div className="absolute right-6 top-6 ">
-                                <Link to={`edit-post/${post.$id}`}>
-                                    <Button bgColor='bg-green-500' className='mr-3'>Edit</Button>
+                            <div className="flex gap-3">
+                                <Link to={`/edit-post/${post.$id}`}>
+                                    <Button bgColor='bg-green-500 hover:bg-green-300'>Edit</Button>
                                 </Link>
-                                <Button bgColor='red-500' onClick={deletePost}>Delete</Button>
+                                <Button bgColor='bg-red-500 hover:bg-red-300' onClick={deletePost}>
+                                    Delete
+                                </Button>
                             </div>
                         )}
                     </div>
-                    <div className="w-full mb-6">
-                        <h1 className="text-2xl font-bold">{post.title}</h1>
+
+                    {/* Content box */}
+                    <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                        <div className="browser-css prose max-w-none text-2xl">
+                            {parse(post.content)}
+                        </div>
                     </div>
-                    <div className="browser-css">{parse(post.content)}</div>
-                </Container>
-            </div>
-        ) : null
-    )
+
+                </div>
+            </Container>
+        </div>
+    ) : null
+)
 }

@@ -1,20 +1,27 @@
 import React, {useEffect, useState} from "react";
 import service from '../appwrite/conf'
 import {Container, PostCard} from '../components'
+import { useSelector } from "react-redux";
 
  export default function Home() {
     const [posts, setPosts] = useState([])
+    const authStatus = useSelector(state => state.auth.status)
     useEffect(() => {
-        service.getPosts().then((posts) => {
-            if(posts){
-                setPosts(posts.documents)
-            }
-        })
+        if(authStatus){
+            service.getPosts().then((posts) => {
+                if(posts){
+                    setPosts(posts.documents)
+                }
+            })
+        }
+        else{
+            setPosts([])
+        }
     }, [])
 
-    if(posts.length === 0){
+    if(!authStatus){
         return (
-            <div className="w-full py-8 mt-4 tetx-center">
+            <div className="w-full py-8 mt-4 text-center">
                 <Container>
                     <div className="flex flex-wrap">
                         <div className="p-2 w-full">
@@ -22,6 +29,18 @@ import {Container, PostCard} from '../components'
                                 Login to Read the Posts !
                             </h1>
                         </div>
+                    </div>
+                </Container>
+            </div>
+        )
+    }
+
+    if (posts.length === 0){
+        return (
+            <div className="w-full py-8 mt-4 text-center">
+                <Container>
+                    <div className="p-2 w-full">
+                        <h1 className="text-3xl font-bold hover:text-gray-500">Add post to see it !</h1>
                     </div>
                 </Container>
             </div>

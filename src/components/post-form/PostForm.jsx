@@ -6,7 +6,7 @@ import service from "../../appwrite/conf";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-function PostForm (post) {
+function PostForm ({post}) {
     const {register, handleSubmit, watch, setValue, control, getValues} = useForm({
         defaultValues: {
             title: post ?.title || "",
@@ -17,56 +17,64 @@ function PostForm (post) {
     })
 
     const navigate = useNavigate()
-    const userData = useSelector(state => state.user.userData)
+    const userData = useSelector(state => state.auth.userData)
 
 
     // making a async function to handle when post is submited to the backend and then display it in the frontend and its various cases
     // it is async cause uploading files, posts and creating all take time ---- need await so it doesnt crash
     // as these are API calls so need the await
     const submit = async (data) => {
-            if(post){
-            const image = data.image[0] ? service.uploadFile(data.image[0]) : null
+        console.log("Form data:", data)          // 👈 add this
+        console.log("userData:", userData)
+            try {
+                if(post){
+                    const file = data.image[0] ? await service.uploadFile(data.image[0]) : null
+                    console.log("result of the file:" , file)
 
-            if(file){
-                service.deleteFile(post.featuredImage)
-            }
-            const dbPost = await service.updatePost(post.$id, {
-                ...data, 
-                featuredImage: file ? file.$id : undefined
-            })
-            if (dbPost){
-                navigate(`./post/${dbPost.$id}`)
-            }
-            else{
-                // const file = await service.uploadFile(data.image[0])
-                const file = data.image[0] ? await service.uploadFile(data.image[0]) : null
-
-                if (file){
-                    const fileId = file.$id
-                    data.featuredImage = fileId
-                    const dbPost = await service.createPost({
-                        ...data,
-                        userId: userData.$id
+                    if(file){
+                        service.deleteFile(post.featuredImage)
+                    }
+                    const dbPost = await service.updatePost(post.$id, {
+                        ...data, 
+                        featuredImage: file ? file.$id : undefined
                     })
-                    if(dbPost){
-                        navigate(`./post/${dbPost.$id}`)
+                    if (dbPost){
+                        navigate(`/post/${dbPost.$id}`)
+                    }
+                }      
+                else{
+                    // const file = await service.uploadFile(data.image[0])
+                    const file = data.image[0] ? await service.uploadFile(data.image[0]) : null
+
+                    if (file){
+                        const fileId = file.$id
+                        data.featuredImage = fileId
+                        const dbPost = await service.createPost({
+                            ...data,
+                            userId: userData.$id
+                        })
+                        if(dbPost){
+                            navigate(`/post/${dbPost.$id}`)
+                        }
                     }
                 }
+            } 
+            catch (error) {
+                console.log("Post submit failed", error.message)
             }
-        }   
     }
 
     // work is to watch title and then read it to pass it to slug
     // if user gives some space convert it ton " - "
     const slugTransform = useCallback((value) => {
-        if(value && value.typeof === 'string'){
+        if(value && typeof value === 'string'){
             // const slug = value.toLowerCase().replace(/ /g, '-')
             // setValue('slug', slug)
             // return slug
             return value
             .trim()
             .toLowerCase()
-            .replace(/^[a-zA-Z\d\s]+/g, '-')
+            .replace(/[^a-z\d\s-]/g, '')
             .replace(/\s/g, '-')
         }
         else{
@@ -81,6 +89,9 @@ function PostForm (post) {
                 setValue('slug', slugTransform(value.title, {shouldValidate:true}))
             }
         })
+
+        return () => subscription.unsubscribe()
+        
     }, [watch, slugTransform, setValue])
 
     return (
@@ -104,7 +115,7 @@ function PostForm (post) {
                     required:true
                 })}
                 onInput={(e) => {
-                    setValue('slug', slugTransform(e.currentTargetValue), {shouldValidate: true})
+                    setValue('slug', slugTransform(e.currentTarget.value), {shouldValidate: true})
                 }}
                 />
                 <RTE 
@@ -114,12 +125,12 @@ function PostForm (post) {
                 defaultValue={getValues('content')}
                 />
             </div>
-            <div className="sw-1/3 px-2">
+            <div className="w-1/3 px-2">
                 <Input 
                 label='Featured Image'
                 type='file'
-                className='mb-4'
-                accept='image/png image/jpg image/jpeg image/gif'
+                className='mb-4 hover:text-gray-500 cursor-pointer'
+                accept='image/png, image/jpg, image/jpeg, image/gif'
                 {...register ('image', {required: !post})}
                 />
                 {post && (
@@ -130,12 +141,12 @@ function PostForm (post) {
                 <Select
                 options={['active', 'inactive']}
                 label='Status'
-                className='mb-4'
+                className='mb-4 text-base'
                 {...register('status', {required: true})}/>
                 <Button
                 type='submit'
-                bgcolor={post ? "bg-green-500" : undefined}
-                className='w-full'
+                bgColor={post ? "bg-green-500 hover:bg-green-300" : undefined}
+                className='w-full text-base cursor-pointer'
                 >
                     {post ? "Update" : "Submit"}
                 </Button>

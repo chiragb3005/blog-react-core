@@ -1,4 +1,3 @@
-    import { buildCreateApi } from "@reduxjs/toolkit/query";
     import conf from "../config/config";
     import { Client, ID, Databases, Storage, Query } from "appwrite";
 
@@ -18,6 +17,7 @@
         // for creating an post after login
         async createPost({title, slug, content, featuredImage, status, userId}) {
             try {
+                console.log("Data being sent:", {title, slug, content, featuredImage, status, userId})
                 return await this.databases.createDocument(
                     conf.appwriteDatabaseId,
                     conf.appwriteCollectionId,
@@ -40,7 +40,7 @@
         // updating an post
         async updatePost(slug, {title, content, featuredImage, status}) {
             try {
-                await this.databases.updateDocument(
+                return await this.databases.updateDocument(
                     conf.appwriteDatabaseId,
                     conf.appwriteCollectionId,
                     slug,
@@ -76,12 +76,11 @@
         // to get a post on the blog
         async getPost(slug) {
             try {
-                await this.databases.getDocument(
+                return await this.databases.getDocument(
                     conf.appwriteDatabaseId,
                     conf.appwriteCollectionId,
                     slug,
                 )
-                return true
             } 
             catch (error) {
                 console.log("Error Occured !!!... ")
@@ -93,7 +92,7 @@
         // status should be active
         async getPosts(queries = [Query.equal('status', 'active')]) {
             try {
-                await this.databases.listDocuments(
+                return await this.databases.listDocuments(
                     conf.appwriteDatabaseId,
                     conf.appwriteCollectionId,
                     queries,
@@ -106,20 +105,19 @@
         }
 
         // file uploading service
-            async uploadFile(file) {
-                try {
-                    await this.bucket.createFile(
-                        conf.appwriteBucketId,
-                        ID.unique,
-                        file                
-                    )
-                    return true 
-                } 
-                catch (error) {
-                    console.log("Error Occured !!!...")
-                    return false;    
-                }
+        async uploadFile(file) {
+            try {
+                return await this.bucket.createFile(
+                    conf.appwriteBucketId,
+                    ID.unique(),
+                    file                
+                )
+            } 
+            catch (error) {
+                console.log("Error Occured !!!...")
+                return false;    
             }
+        }
             // later i have to store and pass this unique id to deleteFile for deleting the post
 
             // for deleting an file
@@ -140,10 +138,10 @@
 
             // for preview of the file
             getFilePreview(fileId){
-                return this.bucket.getFilePreview(
+                return this.bucket.getFileView(
                     conf.appwriteBucketId,
                     fileId,
-                )
+                ).toString()
             }
     }
 

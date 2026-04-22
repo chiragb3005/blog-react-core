@@ -14,7 +14,7 @@ export class AuthService {
         this.account = new Account (this.client);
     }
 
-    async createAccount(email, password, name) {
+    async createAccount({email, password, name}) {
         try {
             const userAccount = await this.account.create(ID.unique(), email, password, name)
             if(userAccount){
@@ -56,9 +56,8 @@ export class AuthService {
             return await this.account.get()
         } 
         catch (error) {
-            throw error;    
+            return null 
         }
-        return null 
         // in case try and catch both not able to return something
     }
 

@@ -28,7 +28,7 @@ function Footer () {
                                     <Link className="text-base font-medium text-gray-900 hover:text-gray-700" to="/"> Pricing </Link>
                                 </li>
                                 <li className="mb-4">
-                                    <Link className="text-base font-medium text-gray-900 hover:text-gray-700" to="">aAffiliate Program</Link>
+                                    <Link className="text-base font-medium text-gray-900 hover:text-gray-700" to="">Affiliate Program</Link>
                                 </li>
                                 <li className="mb-4">
                                     <Link className="text-base font-medium text-gray-900 hover:text-gray-700" to="/"> Press Kit </Link>
@@ -53,8 +53,8 @@ function Footer () {
                         </div>
                     </div>
                     <div className="w-full p-6 md:w-1/2 lg:w-3/12">
-                        <div className=""h-full>
-                            <h3 className="tracking-px mb-9 text-xs fornt-semibold uppercase text-gray-500 ">Legals</h3>
+                        <div className="h-full">
+                            <h3 className="tracking-px mb-9 text-xs font-semibold uppercase text-gray-500 ">Legals</h3>
                             <ul>
                                 <li className="mb-4">
                                     <Link className="text-base font-medium text-gray-900 hover:text-gray-700" to="/">
