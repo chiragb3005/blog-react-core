@@ -35,7 +35,7 @@ function App() {
         <div className='w-full block'>
           <Header/>
           <main className='text-center text-4xl p-4'>
-            TODO: {/* <Outlet/> */}
+            <Outlet/>
           </main>
           <Footer/>
         </div>
