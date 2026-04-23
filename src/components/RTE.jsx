@@ -3,50 +3,50 @@ import { Editor } from "@tinymce/tinymce-react";
 import { Controller } from "react-hook-form";
 
 
-export default function RTE ({name, control, label, defaultValue=""}) {
+export default function RTE({ name, control, label, defaultValue = "" }) {
     return (
         <div className="w-full">
             {label && <label className="inline-block mb-1 pl-1 ">{label}</label>}
             <Controller
-            name={name || "content"}
-            control={control}
-            render={({field: {onChange}}) => (
-                <Editor
-                apiKey="y6hgwbqdmtftdcgn2iyh1wa0g03e200ytm0vddof87avnpj2"
-                initialValue={defaultValue}
-                init={{
-                    initialValue: defaultValue,
-                    height: 500,
-                    menubar: true,
-                    plugins: [
-                        'image',
-                        'advlist',
-                        'autolink',
-                        'lists',
-                        'link',
-                        'image',
-                        'charmap',
-                        'preview',
-                        'anchor',
-                        'searchplace',
-                        'visualblocks',
-                        'code',
-                        'fullscreen',
-                        'insertdatetime',
-                        'media',
-                        'table',
-                        'code',
-                        'help',
-                        'wordcount',
-                        'anchor',
-                    ],
-                    toolbar: 
-                    'undo redo | blocks | image | bold italic forecolor | alignleft aligncenter bold italic forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outend intend | removeformat | help',
-                    content_style: "body { font-family:Helvetica, Arial, sans-serif , font-size:14px }"
-                }}
-                onEditorChange={onChange}
-                />
-            )}
+                name={name || "content"}
+                control={control}
+                render={({ field: { onChange } }) => (
+                    <Editor
+                        apiKey="t705hzqyejpu8zkzf1qnkcdhzgcczwk1oy9thuoosacfsmvt"
+                        initialValue={defaultValue}
+                        init={{
+                            initialValue: defaultValue,
+                            height: 500,
+                            menubar: true,
+                            plugins: [
+                                'image',
+                                'advlist',
+                                'autolink',
+                                'lists',
+                                'link',
+                                'image',
+                                'charmap',
+                                'preview',
+                                'anchor',
+                                'searchplace',
+                                'visualblocks',
+                                'code',
+                                'fullscreen',
+                                'insertdatetime',
+                                'media',
+                                'table',
+                                'code',
+                                'help',
+                                'wordcount',
+                                'anchor',
+                            ],
+                            toolbar:
+                                'undo redo | blocks | image | bold italic forecolor | alignleft aligncenter bold italic forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outend intend | removeformat | help',
+                            content_style: "body { font-family:Helvetica, Arial, sans-serif , font-size:14px }"
+                        }}
+                        onEditorChange={onChange}
+                    />
+                )}
             />
         </div>
     )
