@@ -15,22 +15,24 @@ function Signup () {
     const create = async(data)=> {
         setError("")
         try {
-            const userData = await authService.createAccount(data.email, data.password, data.name)
+            const userData = await authService.createAccount({
+                email: data.email, 
+                password: data.password, 
+                name: data.name
+            })
             if(userData){
-                const userData = await authService.getCurrentUser()
-                if(userData){
-                    dispatch(login({userData}))
+                const currentUser = await authService.getCurrentUser()
+                if(currentUser){
+                    dispatch(login(currentUser))
                     navigate("/")
                 }
             }
-        } 
-        catch (error) {
+        } catch (error) {
             setError(error.message)    
         }
     }
 
     return (
-
         <div className="flex items-center justify-center">
             <div className={`mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black/10`}>
                 <div className="mb-2 flex justify-center">
@@ -50,16 +52,14 @@ function Signup () {
                         <Input 
                         label='Name'
                         placeholder='Enter your full name'
-                        {...register ('name', {
-                            required:true,
-                        })}
+                        {...register('name', { required: true })}
                         />
                         <Input 
                         label='E-mail'
                         type='email'
                         placeholder='Enter your Email'
-                        {...register ('email', {
-                            required:true,
+                        {...register('email', {
+                            required: true,
                             validate: {
                                 matchPatter: (value) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
                                 "Email address must be a valid address",
@@ -70,21 +70,15 @@ function Signup () {
                         label='Password'
                         type='password'
                         placeholder='Enter a strong password'
-                        {...register ('password', {
-                            required:true,
-                        })}
+                        {...register('password', { required: true })}
                         />
-                        <Button
-                        type='submit'
-                        className='w-full'
-                        >
+                        <Button type='submit' className='w-full'>
                             Create Your Account
                         </Button>
                     </div>
                 </form>
             </div>
         </div>
-
     )
 }
 

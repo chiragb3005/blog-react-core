@@ -74,16 +74,15 @@
         }
 
         // to get a post on the blog
-        async getPost(slug) {
+        async getPosts(queries = [Query.equal('status', 'active')]) {
             try {
-                return await this.databases.getDocument(
+                return await this.databases.listDocuments(
                     conf.appwriteDatabaseId,
                     conf.appwriteCollectionId,
-                    slug,
+                    queries,
                 )
-            } 
-            catch (error) {
-                console.log("Error Occured !!!... ")
+            } catch (error) {
+                console.log("Error Occured !!!...")
                 return false;    
             }
         }

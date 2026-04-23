@@ -1,17 +1,25 @@
 import React, {useState, useEffect} from "react";
 import service from "../appwrite/conf";
 import { Container, PostCard } from "../components";
-
+import { useSelector } from "react-redux";
+import { Query } from "appwrite";
 
 function AllPosts () {
     const [posts, setPosts] = useState([])
+    const userData = useSelector(state => state.auth.userData)
+
     useEffect(() => {
-        service.getPosts().then((posts) => {
-            if(posts){
-                setPosts(posts.documents)
-            }
-        })
-    }, [])
+        if(userData){
+            service.getPosts([
+                Query.equal('status', 'active'),
+                Query.equal('userId', userData.$id)
+            ]).then((posts) => {
+                if(posts){
+                    setPosts(posts.documents)
+                }
+            })
+        }
+    }, [userData])
     
     return (
         <div className="w-full py-8">
