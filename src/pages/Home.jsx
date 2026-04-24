@@ -29,11 +29,11 @@ function Home() {
                         <div className="p-2 w-full">
                             {authStatus && userData ?
                                 <h1 className="text-2xl font-bold hover:text-gray-500">
-                                    Login to read posts.
+                                    Go to All Posts section to see the posts or and upload your also.
                                 </h1>
                                 :
                                 <h1 className="text-2xl font-bold hover:text-gray-500">
-                                    Go to All Posts section to see the posts or and upload your also.
+                                    Login to read posts.
                                 </h1>}
                         </div>
                     </div>
