@@ -81,18 +81,20 @@ export class Service {
         }
     }
 
-    async getPosts(queries = [Query.equal("status", "active")]) {
+    async getPosts(userId) {
         try {
             return await this.databases.listDocuments(
                 conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
-                queries,
-
-
-            )
-        } catch (error) {
-            console.log("Appwrite serive :: getPosts :: error", error);
-            return false
+                [
+                    Query.equal("status", "active"),
+                    Query.equal("userId", userId),
+                ]
+            );
+        }
+        catch (error) {
+            console.log("Appwrite service :: getPosts :: error", error);
+            return false;
         }
     }
 
